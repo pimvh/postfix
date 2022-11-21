@@ -1,0 +1,6 @@
+{% for config in postfix_dkim_keys %}
+{% if config.mail %}
+{{ config.mail }}@{{ postfix_mydomain }} {{ config.name }}
+{{ config.mail }}@*.{{ postfix_mydomain }} {{ config.name }}
+{% endif %}
+{% endfor %}

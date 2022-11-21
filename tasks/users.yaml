@@ -1,0 +1,26 @@
+---
+- name: adding existing user clamav to amavis group
+  user:
+    name: clamav
+    groups: amavis
+    append: true
+  become: true
+
+- name: adding existing user postfix user to opendkim group
+  user:
+    name: postfix
+    groups: amavis
+    append: true
+  become: true
+
+- name: add opendkim and policyd-spf users
+  user:
+    name: "{{ user_name }}"
+    state: present
+    system: true
+  become: true
+  loop:
+    - opendkim
+    - policyd-spf
+  loop_control:
+    loop_var: user_name

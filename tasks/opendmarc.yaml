@@ -1,0 +1,40 @@
+---
+- name: Create OpenDMARC directory
+  file:
+    path: "/etc/opendmarc"
+    state: directory
+    owner: opendmarc
+    group: opendmarc
+    mode: u=rwx,g=rx,o=x
+  become: true
+
+- name: Create OpenDMARC spool dir
+  file:
+    path: "/var/spool/opendmarc/"
+    state: directory
+    owner: opendmarc
+    group: opendmarc
+    mode: u=rwx,g=rx,o=rx
+  become: true
+  notify: "restart opendmarc"
+
+- name: Create OpenDMARC ignore hosts
+  template:
+    src: opendmarc/ignore.hosts.j2
+    dest: /etc/opendmarc/ignore.hosts
+    owner: opendmarc
+    group: opendmarc
+    mode: u=rw,g=r,o=
+  become: true
+  notify: "restart opendmarc"
+
+- name: Copy OpenDMARC config file
+  template:
+    src: opendmarc/opendmarc.conf.j2
+    dest: "/etc/opendmarc.conf"
+    validate: opendmarc -n -c %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: "restart opendmarc"

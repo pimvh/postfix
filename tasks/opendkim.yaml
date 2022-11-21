@@ -1,0 +1,68 @@
+---
+- name: create dkim directory
+  file:
+    path: "/etc/dkimkeys/{{ postfix.mydomain }}"
+    state: directory
+    owner: opendkim
+    group: opendkim
+    mode: u=rwx,g=x,o=x
+  become: true
+
+- name: create dkim directory
+  file:
+    path: "/var/spool/opendkim"
+    state: directory
+    owner: opendkim
+    group: opendkim
+    mode: u=rwx,g=rx,o=x
+  become: true
+
+- name: create dkim directory
+  file:
+    path: "/var/spool/opendkim/stats.dat"
+    state: touch
+    owner: opendkim
+    group: opendkim
+    mode: u=rwx,g=rx,o=x
+  become: true
+
+- name: create dkim config directory
+  file:
+    path: "/etc/opendkim"
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  become: true
+
+- include_tasks: dkim_keys.yaml
+  loop: "{{ postfix_dkim_keys }}"
+  loop_control:
+    loop_var: dkim_key
+
+- name: Copy OpenDKIM SigningTable, KeyTable and TrustedHosts config files
+  template:
+    src: "opendkim/{{ dkim_file | split('/') | last }}.j2"
+    dest: "{{ dkim_file }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: "restart opendkim"
+  loop:
+    - "{{ postfix_dkim_signingtable }}"
+    - "{{ postfix_dkim_keytable }}"
+    - "{{ postfix_dkim_trustedhosts }}"
+  loop_control:
+    loop_var: dkim_file
+
+- name: Copy OpenDKIM config file
+  template:
+    src: opendkim/opendkim.conf.j2
+    dest: "/etc/opendkim.conf"
+    validate: opendkim -n -x %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: "restart opendkim"

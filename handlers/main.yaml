@@ -1,0 +1,50 @@
+---
+- name: Generate virtual database for postfix
+  command: sudo postmap /etc/postfix/virtual
+  become: true
+  listen: "generate virtual aliasdb"
+
+- name: enable and restart Postfix service
+  service:
+    name: postfix
+    state: restarted
+    enabled: true
+  become: true
+  listen: "restart postfix"
+
+- name: update aliases
+  command: newaliases
+  become: true
+  listen: "update aliases"
+
+- name: restart dovecot
+  service:
+    name: dovecot
+    state: restarted
+    enabled: true
+  become: true
+  listen: "restart dovecot"
+
+- name: restart amavis
+  service:
+    name: amavis
+    state: restarted
+    enabled: true
+  become: true
+  listen: "restart amavis"
+
+- name: restart opendkim
+  service:
+    name: opendkim
+    state: restarted
+    enabled: true
+  become: true
+  listen: "restart opendkim"
+
+- name: restart opendmarc
+  service:
+    name: opendmarc
+    state: restarted
+    enabled: true
+  become: true
+  listen: "restart opendmarc"

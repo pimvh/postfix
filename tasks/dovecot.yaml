@@ -1,0 +1,16 @@
+---
+- name: Copy dovecot configuration file
+  template:
+    src: dovecot/{{ config }}.j2
+    dest: "/etc/dovecot/conf.d/{{ config }}"
+    validate: doveconf %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  loop:
+    - 10-auth.conf
+    - 10-master.conf
+  loop_control:
+    loop_var: config
+  notify: restart dovecot

@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+# virtual aliases
+
+{% for alias in postfix_virtual_aliases %}
+{{ alias.email }} {{ alias.user }}
+{% endfor %}
+

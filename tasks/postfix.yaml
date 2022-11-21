@@ -1,0 +1,58 @@
+---
+- name: Copy Postfix master file
+  template:
+    src: postfix/master.cf.j2
+    dest: "{{ postfix_dir }}/master.cf"
+    # breaks things might break things
+    # validate: "/sbin/postfix check %s"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: "restart postfix"
+
+- name: Copy Postfix config file
+  block:
+    - name: Template postfix file
+      template:
+        src: postfix/main.cf.j2
+        dest: "{{ postfix_dir }}/main.cf"
+        # breaks things
+        # validate: "/sbin/postfix check %s"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      become: true
+      register: postfix_config
+
+    # cannot make validation, because postfix does
+    # support Ansible type validation
+    - name: Check postfix file
+      command: /sbin/postfix check
+      become: true
+      when: postfix_config.changed
+  notify:
+    - "restart postfix"
+
+- name: Copy Postfix aliases file
+  template:
+    src: postfix/aliases.j2
+    dest: "/etc/aliases"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=
+  become: true
+  notify: "update aliases"
+
+- name: Copy Postfix virtual aliases file
+  template:
+    src: postfix/virtual.j2
+    dest: "/etc/postfix/virtual"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=
+  become: true
+  register: virtual
+  notify:
+    - generate virtual aliasdb
+    - restart postfix

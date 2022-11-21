@@ -1,0 +1,27 @@
+AuthservID OpenDMARC
+PidFile /var/run/opendmarc/opendmarc.pid
+
+Syslog true
+
+CopyFailuresTo dmarc-failures@{{ postfix_mydomain }}
+FailureReports true
+FailureReportsBcc dmarc-reports-sent@{{ postfix_mydomain }}
+FailureReportsOnNone true
+
+FailureReportsSentBy postmaster@{{ postfix_mydomain }}
+
+HistoryFile /var/spool/opendmarc/opendmarc.dat
+IgnoreAuthenticatedClients true
+
+IgnoreHosts /etc/opendmarc/ignore.hosts
+
+RejectFailures false
+ReportCommand /usr/sbin/sendmail -t
+RequiredHeaders true
+
+Socket inet:8893@localhost
+
+SoftwareHeader true
+SPFIgnoreResults true
+SPFSelfValidate true
+TrustedAuthservIDs HOSTNAME

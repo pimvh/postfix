@@ -1,0 +1,52 @@
+---
+- name: Assert required variables for role are defined
+  ansible.builtin.include_tasks:
+    file: assert.yaml
+    apply:
+      delegate_to: localhost
+      run_once: true
+
+- name: Install package
+  ansible.builtin.include_tasks:
+    file: install.yaml
+
+- name: Configure required users
+  ansible.builtin.include_tasks:
+    file: users.yaml
+
+- name: Configure amavis
+  ansible.builtin.include_tasks:
+    file: amavis.yaml
+
+- name: Configure opendkim
+  ansible.builtin.include_tasks:
+    file: opendkim.yaml
+
+- name: Configure opendmarc
+  ansible.builtin.include_tasks:
+    file: opendmarc.yaml
+
+# Dovecot WIP
+- name: Configure dovecot
+  ansible.builtin.include_tasks:
+    file: dovecot.yaml
+
+- name: Configure postfix
+  ansible.builtin.include_tasks:
+    file: postfix.yaml
+
+- name: Touch postfix logfile
+  file:
+    path: "/var/log/{{ log_file }}"
+    state: touch
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    modification_time: preserve
+    access_time: preserve
+  loop:
+    - mail.log
+    - mail.err
+  loop_control:
+    loop_var: log_file
+  become: true

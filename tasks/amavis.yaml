@@ -1,0 +1,35 @@
+---
+- name: Enable amavis spamfilter
+  template:
+    src: amavis/15-content_filter_mode.j2
+    dest: /etc/amavis/conf.d/15-content_filter_mode
+    # validation does not work on partial config
+    # validate: amavisd-new -c %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: restart amavis
+
+- name: change amavis policy bank
+  template:
+    src: amavis/40-policy_banks.j2
+    dest: /etc/amavis/conf.d/40-policy_banks
+    # validation does not work on partial config
+    # validate: amavisd-new -c %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: restart amavis
+
+- name: Copy amavis main configuration file
+  template:
+    src: amavis/50-user.j2
+    dest: "/etc/amavis/conf.d/50-user"
+    validate: amavisd-new -c %s
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true
+  notify: restart amavis

@@ -1,0 +1,25 @@
+---
+- name: Set Postfix option type as internet site
+  debconf:
+    name: postfix
+    question: "postfix/main_mailer_type"
+    value: "Internet Site"
+    vtype: "string"
+  when: postfix_install
+  become: true
+
+- name: install Postfix and related packages
+  package:
+    name:
+      - postfix
+      - opendkim
+      - opendmarc
+      - postfix-policyd-spf-python
+      - amavisd-new
+      - spamassassin
+      - clamav
+      - clamav-daemon
+      - dovecot-core
+    state: present
+  when: postfix_install
+  become: true

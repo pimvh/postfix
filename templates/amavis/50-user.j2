@@ -1,0 +1,84 @@
+use strict;
+
+{{ ansible_managed | comment(decoration="#") }}
+
+#
+# Place your configuration directives here.  They will override those in
+# earlier files.
+#
+# See /usr/share/doc/amavisd-new/ for documentation and examples of
+# the directives you can use in this file
+#
+$inet_socket_port = [10024,10026];  # listen on multiple TCP ports
+
+# it is up to MTA to re-route mail from authenticated roaming users or
+# from internal hosts to a dedicated TCP port (such as 10026) for filtering
+$interface_policy{'10026'} = 'ORIGINATING';
+
+$mydomain = '{{ postfix_mydomain }}';
+$enable_dkim_verification = 0;
+$enable_dkim_signing = 0;
+$sa_tag_level_deflt  = -999;
+virus_admin_maps => ["virusalert\@$mydomain"],
+spam_admin_maps  => ["virusalert\@$mydomain"],
+$virus_admin               = "postmaster\@$mydomain";
+$mailfrom_notify_admin     = "postmaster\@$mydomain";
+$mailfrom_notify_recip     = "postmaster\@$mydomain";
+$mailfrom_notify_spamadmin = "postmaster\@$mydomain";
+$recipient_delimiter = '+';
+$myhostname = '{{ postfix_myhostname }}';
+
+$forward_method = 'smtp:[127.0.0.1]:10025';  # MTA with non-signing service
+$notify_method  = 'smtp:[127.0.0.1]:10025';
+
+$final_spam_destiny = D_DISCARD;
+$spam_quarantine_to = undef; # Do nothing with Spam
+
+# Origination policy bank
+$policy_bank{'ORIGINATING'} = {
+  # mail supposedly originating from our users
+
+  # declare that mail was submitted by our smtp client
+  originating => 1,
+
+  # enables disclaimer insertion if available
+  allow_disclaimers => 1,
+
+  # notify administrator of locally originating malware
+  virus_admin_maps => ["\@$mydomain"],
+  spam_admin_maps  => ["postmaster\@$mydomain"],
+  warnbadhsender   => 1,
+
+  # forward to a smtpd service providing DKIM signing service
+  forward_method => 'smtp:[127.0.0.1]:10027',
+
+  # force MTA conversion to 7-bit (e.g. before DKIM signing)
+  smtpd_discard_ehlo_keywords => ['8BITMIME'],
+
+  # allow sending any file names and types
+  bypass_banned_checks_maps => [1],
+
+  # don't remove NOTIFY=SUCCESS option
+  terminate_dsn_on_notify_success => 0,
+};
+
+{#
+ # Amavis does not DKIM, but this is what it would look like
+ # dkim_key(
+ #   '{{ postfix.mydomain }}',
+ #   'default',
+ #   '/etc/amavisd/{{ postfix .default.pem'
+ #   );
+ # @dkim_signature_options_bysender_maps = ( {
+ #   "example.nl" => {
+ #     d   => 'example.nl',
+ #     a   => 'rsa-sha256',
+ #     c   => 'relaxed/simple',
+ #     ttl => 10*24*3600
+ #     }
+ # });
+#}
+
+#------------ Do not modify anything below this line -------------
+1;  # ensure a defined return
+
