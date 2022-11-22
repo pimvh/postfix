@@ -1,7 +1,7 @@
 ---
 - name: create dkim directory
   file:
-    path: "/etc/dkimkeys/{{ postfix.mydomain }}"
+    path: "/etc/dkimkeys/{{ postfix_mydomain }}"
     state: directory
     owner: opendkim
     group: opendkim
