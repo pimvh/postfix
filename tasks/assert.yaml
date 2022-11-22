@@ -15,7 +15,6 @@
     - "postfix_mynetworks"
     - "postfix_virtual_alias_domains"
     - "postfix_aliases"
-    - "postfix_virtual_aliases"
     - "postfix_ipv4"
     - "postfix_ipv6"
 

@@ -1,7 +1,8 @@
 {{ ansible_managed | comment }}
 # virtual aliases
-
+{% if postfix_virtual_aliases is defined %}
 {% for alias in postfix_virtual_aliases %}
 {{ alias.email }} {{ alias.user }}
 {% endfor %}
+{% endif %}
 
