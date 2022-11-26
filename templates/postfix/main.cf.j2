@@ -623,10 +623,16 @@ smtp_tls_security_level = may
 smtpd_tls_security_level = encrypt
 smtpd_tls_auth_only = yes
 smtp_tls_note_starttls_offer = yes
+smtpd_tls_cert_file= {{ postfix_smtpd_tls_cert_file }}
+smtpd_tls_key_file= {{ postfix_smtpd_tls_key_file }}
+{#
+look more in detail at other other certs
 smtpd_tls_cert_file = /etc/pki/tls/certs/postfix-rsa.cert
 smtpd_tls_eccert_file = /etc/pki/tls/certs/postfix-ecdsa.cert
 smtpd_tls_key_file = /etc/pki/tls/private/postfix-rsa.key
 smtpd_tls_eckey_file = /etc/pki/tls/private/postfix-ecdsa.key
+#}
+
 smtpd_tls_auth_only = yes
 smtpd_tls_loglevel = 1
 

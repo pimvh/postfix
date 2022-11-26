@@ -26,30 +26,5 @@ postfix_dkim_keytable: /etc/opendkim/keytable
 postfix_dkim_signingtable: /etc/opendkim/signingtable
 postfix_dkim_trustedhosts: "/etc/opendkim/trustedhosts"
 
-# OLD FORMAT
-
-postfix:
-  myhostname: "{{ domain }}"
-  mydomain: []
-  virtual_alias_domains: []
-  mynetworks:
-    - 127.0.0.0/8
-    - "[::1]/128"
-  relay_domains: []
-
-  aliases:
-    - user: root
-      alias: postmaster
-  virtual_aliases: []
-
-dkim:
-  enabled: yes
-  keys:
-    default:
-      mail: "*"
-
-  keytable: /etc/opendkim/keytable
-  signingtable: /etc/opendkim/signingtable
-  trustedhosts: "/etc/opendkim/trustedhosts"
-
-install_postfix: true
+postfix_smtpd_tls_cert_file: "etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
+postfix_smtpd_tls_key_file: "etc/letsencrypt/live/{{ postfix_mydomain }}/privkey.pem"

@@ -20,4 +20,4 @@ galaxy_info:
     - nftables
 
 dependencies:
-  - role: pimvh.systemd_failmail
+  - role: pimvh.certbot

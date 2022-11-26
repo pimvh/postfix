@@ -10,13 +10,15 @@
   changed_when: false
   diff: false
   loop:
-    - "postfix_mydomain"
-    - "postfix_myhostname"
-    - "postfix_mynetworks"
-    - "postfix_virtual_alias_domains"
-    - "postfix_aliases"
-    - "postfix_ipv4"
-    - "postfix_ipv6"
+    - postfix_mydomain
+    - postfix_myhostname
+    - postfix_mynetworks
+    - postfix_virtual_alias_domains
+    - postfix_aliases
+    - postfix_ipv4
+    - postfix_ipv6
+    - postfix_smtpd_tls_cert_file
+    - postfix_smtpd_tls_key_file
 
 - name: Verify that required variables are defined
   assert:
@@ -38,9 +40,9 @@
     success_msg: "Required variable {{ item }} is defined"
   changed_when: false
   loop:
-    - "postfix_dkim_trustedhosts"
-    - "postfix_dkim_keys"
-    - "postfix_dkim_keytable"
-    - "postfix_dkim_signingtable"
-    - "postfix_dkim_trustedhosts"
+    - postfix_dkim_trustedhosts
+    - postfix_dkim_keys
+    - postfix_dkim_keytable
+    - postfix_dkim_signingtable
+    - postfix_dkim_trustedhosts
   when: postfix_dkim_enabled
