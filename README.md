@@ -22,6 +22,10 @@ roles:
 
 ```
 
+Note that this role is dependant on pimvh.certbot, for its TLS certificate.
+
+You probably want to pass certbot related variables as well, which can be found [here](https://github.com/pimvh/certbot).
+
 # TLDR - What will happen if I run this
 
 - validate whether variables are all right
