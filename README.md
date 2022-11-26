@@ -32,6 +32,12 @@ roles:
 - install and configure opendmarc dashboard (WIP)
 - install and configure dovecot (WIP)
 
+# Future Improvements
+
+- Finish implementing opendmarc dashboard
+- Add alternatives to certbot role
+- Finish implementing dovecot service
+
 # License
 
 The GPLv3 License (GPLv3)
