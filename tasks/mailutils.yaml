@@ -1,0 +1,8 @@
+- name: Copy mailutils config file
+  ansible.builtin.template:
+    src: "mailutils/mailutils.conf"
+    dest: "/etc/mailutils.conf"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: true

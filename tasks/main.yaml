@@ -35,8 +35,12 @@
   ansible.builtin.include_tasks:
     file: postfix.yaml
 
+- name: Configure mailutils
+  ansible.builtin.include_tasks:
+    file: mailutils.yaml
+
 - name: Touch postfix logfile
-  file:
+  ansible.builtin.file:
     path: "/var/log/{{ log_file }}"
     state: touch
     owner: root
