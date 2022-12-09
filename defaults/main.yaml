@@ -11,6 +11,12 @@ postfix_relay_domains: []
 postfix_aliases:
   - user: root
     alias: postmaster
+# can be also a list of users
+# - users:
+#     - fred
+#     - foo
+#     - bar
+#   alias: something
 
 postfix_virtual_aliases: []
 

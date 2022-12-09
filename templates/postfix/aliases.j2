@@ -2,5 +2,9 @@
 # see man 5 aliases for format
 
 {% for alias in postfix_aliases %}
+{% if alias.users is defined %}
+{{ alias.alias }}: {{ alias.users | join(',') }}
+{% elif alias.user is defined %}
 {{ alias.alias }}: {{ alias.user }}
+{% endif %}
 {% endfor %}
