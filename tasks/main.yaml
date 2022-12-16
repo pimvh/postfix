@@ -26,7 +26,6 @@
   ansible.builtin.include_tasks:
     file: opendmarc.yaml
 
-# Dovecot WIP
 - name: Configure dovecot
   ansible.builtin.include_tasks:
     file: dovecot.yaml
@@ -45,7 +44,7 @@
     state: touch
     owner: root
     group: root
-    mode: u=rw,g=r,o=r
+    mode: u=rw,g=r,o=
     modification_time: preserve
     access_time: preserve
   loop:

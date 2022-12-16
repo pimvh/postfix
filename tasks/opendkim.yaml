@@ -1,6 +1,6 @@
 ---
-- name: create dkim directory
-  file:
+- name: Create dkim directory
+  ansible.builtin.file:
     path: "/etc/dkimkeys/{{ postfix_mydomain }}"
     state: directory
     owner: opendkim
@@ -8,8 +8,8 @@
     mode: u=rwx,g=x,o=x
   become: true
 
-- name: create dkim directory
-  file:
+- name: Create dkim directory
+  ansible.builtin.file:
     path: "/var/spool/opendkim"
     state: directory
     owner: opendkim
@@ -17,17 +17,19 @@
     mode: u=rwx,g=rx,o=x
   become: true
 
-- name: create dkim directory
-  file:
+- name: Create dkim stats file
+  ansible.builtin.file:
     path: "/var/spool/opendkim/stats.dat"
     state: touch
     owner: opendkim
     group: opendkim
     mode: u=rwx,g=rx,o=x
+    modification_time: preserve
+    access_time: preserve
   become: true
 
-- name: create dkim config directory
-  file:
+- name: Create dkim config directory
+  ansible.builtin.file:
     path: "/etc/opendkim"
     state: directory
     owner: root
@@ -35,13 +37,15 @@
     mode: u=rwx,g=rx,o=rx
   become: true
 
-- include_tasks: dkim_keys.yaml
+- name: Create DKIM keys
+  ansible.builtin.include_tasks:
+    file: dkim_keys.yaml
   loop: "{{ postfix_dkim_keys }}"
   loop_control:
     loop_var: dkim_key
 
 - name: Copy OpenDKIM SigningTable, KeyTable and TrustedHosts config files
-  template:
+  ansible.builtin.template:
     src: "opendkim/{{ dkim_file | split('/') | last }}.j2"
     dest: "{{ dkim_file }}"
     owner: root
