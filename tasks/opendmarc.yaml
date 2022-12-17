@@ -1,6 +1,6 @@
 ---
 - name: Create OpenDMARC directory
-  file:
+  ansible.builtin.file:
     path: "/etc/opendmarc"
     state: directory
     owner: opendmarc
@@ -9,7 +9,7 @@
   become: true
 
 - name: Create OpenDMARC spool dir
-  file:
+  ansible.builtin.file:
     path: "/var/spool/opendmarc/"
     state: directory
     owner: opendmarc
@@ -19,7 +19,7 @@
   notify: "restart opendmarc"
 
 - name: Create OpenDMARC ignore hosts
-  template:
+  ansible.builtin.template:
     src: opendmarc/ignore.hosts.j2
     dest: /etc/opendmarc/ignore.hosts
     owner: opendmarc
@@ -29,7 +29,7 @@
   notify: "restart opendmarc"
 
 - name: Copy OpenDMARC config file
-  template:
+  ansible.builtin.template:
     src: opendmarc/opendmarc.conf.j2
     dest: "/etc/opendmarc.conf"
     validate: opendmarc -n -c %s

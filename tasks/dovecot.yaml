@@ -1,6 +1,6 @@
 ---
 - name: Copy dovecot configuration file
-  template:
+  ansible.builtin.template:
     src: dovecot/{{ config }}.j2
     dest: "/etc/dovecot/conf.d/{{ config }}"
     validate: doveconf %s

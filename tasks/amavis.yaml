@@ -11,7 +11,7 @@
   become: true
   notify: restart amavis
 
-- name: change amavis policy bank
+- name: Change amavis policy bank
   template:
     src: amavis/40-policy_banks.j2
     dest: /etc/amavis/conf.d/40-policy_banks

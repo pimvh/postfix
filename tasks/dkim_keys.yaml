@@ -1,17 +1,17 @@
 ---
-- name: check if key is present
-  stat:
+- name: Check if key is present
+  ansible.builtin.stat:
     path: "/etc/dkimkeys/{{ postfix_mydomain }}/{{ dkim_key.name }}.private"
   become: true
   register: open_dkim_key_present
 
-- name: create key if not present
-  command: "opendkim-genkey -b 1024 -d {{ postfix_mydomain }} -D /etc/dkimkeys/{{ postfix_mydomain }} -s {{ dkim_key.name }} -v"
+- name: Create key if not present
+  ansible.builtin.command: "opendkim-genkey -b 1024 -d {{ postfix_mydomain }} -D /etc/dkimkeys/{{ postfix_mydomain }} -s {{ dkim_key.name }} -v"
   become: true
   when: not open_dkim_key_present.stat.exists
 
 - name: Ensure correct key permissions
-  file:
+  ansible.builtin.file:
     name: "/etc/dkimkeys/{{ postfix_mydomain }}/{{ dkim_key.name }}.private"
     owner: opendkim
     group: opendkim

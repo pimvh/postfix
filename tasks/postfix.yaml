@@ -1,6 +1,6 @@
 ---
 - name: Copy Postfix master file
-  template:
+  ansible.builtin.template:
     src: postfix/master.cf.j2
     dest: "{{ postfix_dir }}/master.cf"
     # breaks things might break things
@@ -12,9 +12,11 @@
   notify: "restart postfix"
 
 - name: Copy Postfix config file
+  notify:
+    - "restart postfix"
   block:
     - name: Template postfix file
-      template:
+      ansible.builtin.template:
         src: postfix/main.cf.j2
         dest: "{{ postfix_dir }}/main.cf"
         # breaks things
@@ -28,14 +30,12 @@
     # cannot make validation, because postfix does
     # support Ansible type validation
     - name: Check postfix file
-      command: /sbin/postfix check
+      ansible.builtin.command: /sbin/postfix check
       become: true
       when: postfix_config.changed
-  notify:
-    - "restart postfix"
 
 - name: Copy Postfix aliases file
-  template:
+  ansible.builtin.template:
     src: postfix/aliases.j2
     dest: "/etc/aliases"
     owner: root
@@ -45,7 +45,7 @@
   notify: "update aliases"
 
 - name: Copy Postfix virtual aliases file
-  template:
+  ansible.builtin.template:
     src: postfix/virtual.j2
     dest: "/etc/postfix/virtual"
     owner: root

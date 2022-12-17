@@ -5,38 +5,73 @@
     apply:
       delegate_to: localhost
       run_once: true
+      tags:
+        - postfix_assert
+  tags: postfix_assert
 
 - name: Install package
   ansible.builtin.include_tasks:
     file: install.yaml
+    apply:
+      tags:
+        - postfix_install
+  tags: postfix_install
 
 - name: Configure required users
   ansible.builtin.include_tasks:
     file: users.yaml
+    apply:
+      tags:
+        - postfix_setup
+  tags: postfix_setup
 
 - name: Configure amavis
   ansible.builtin.include_tasks:
     file: amavis.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Configure opendkim
   ansible.builtin.include_tasks:
     file: opendkim.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Configure opendmarc
   ansible.builtin.include_tasks:
     file: opendmarc.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Configure dovecot
   ansible.builtin.include_tasks:
     file: dovecot.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Configure postfix
   ansible.builtin.include_tasks:
     file: postfix.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Configure mailutils
   ansible.builtin.include_tasks:
     file: mailutils.yaml
+    apply:
+      tags:
+        - postfix_update
+  tags: postfix_update
 
 - name: Touch postfix logfile
   ansible.builtin.file:
@@ -53,3 +88,4 @@
   loop_control:
     loop_var: log_file
   become: true
+  tags: postfix_setup

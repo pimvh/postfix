@@ -1,20 +1,20 @@
 ---
-- name: adding existing user clamav to amavis group
-  user:
+- name: Adding existing user clamav to amavis group
+  ansible.builtin.user:
     name: clamav
     groups: amavis
     append: true
   become: true
 
-- name: adding existing user postfix user to opendkim group
-  user:
+- name: Adding existing user postfix user to opendkim group
+  ansible.builtin.user:
     name: postfix
     groups: amavis
     append: true
   become: true
 
-- name: add opendkim and policyd-spf users
-  user:
+- name: Add opendkim and policyd-spf users
+  ansible.builtin.user:
     name: "{{ user_name }}"
     state: present
     system: true

@@ -1,6 +1,6 @@
 ---
 - name: Set Postfix option type as internet site
-  debconf:
+  ansible.builtin.debconf:
     name: postfix
     question: "postfix/main_mailer_type"
     value: "Internet Site"
@@ -9,7 +9,7 @@
   become: true
 
 - name: install Postfix and related packages
-  package:
+  ansible.builtin.package:
     name:
       - postfix
       - opendkim
