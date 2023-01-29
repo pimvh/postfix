@@ -16,8 +16,14 @@ galaxy_info:
         - bullseye
 
   galaxy_tags:
-    - firewall
-    - nftables
+    - postfix
+    - mail
+    - clamav
+    - amavis
+    - dkim
+    - spf
+    - dmarc
+    - certbot
 
 dependencies:
   - role: pimvh.certbot
