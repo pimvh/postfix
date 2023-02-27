@@ -5,7 +5,7 @@
   listen: "generate virtual aliasdb"
 
 - name: enable and restart Postfix service
-  service:
+  ansible.builtin.systemd:
     name: postfix
     state: restarted
     enabled: true
@@ -13,12 +13,12 @@
   listen: "restart postfix"
 
 - name: update aliases
-  command: newaliases
+  ansible.builtin.command: newaliases
   become: true
   listen: "update aliases"
 
 - name: restart dovecot
-  service:
+  ansible.builtin.systemd:
     name: dovecot
     state: restarted
     enabled: true
@@ -26,7 +26,7 @@
   listen: "restart dovecot"
 
 - name: restart amavis
-  service:
+  ansible.builtin.systemd:
     name: amavis
     state: restarted
     enabled: true
@@ -34,7 +34,7 @@
   listen: "restart amavis"
 
 - name: restart opendkim
-  service:
+  ansible.builtin.systemd:
     name: opendkim
     state: restarted
     enabled: true
@@ -42,7 +42,7 @@
   listen: "restart opendkim"
 
 - name: restart opendmarc
-  service:
+  ansible.builtin.systemd:
     name: opendmarc
     state: restarted
     enabled: true
