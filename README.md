@@ -33,12 +33,18 @@ You probably want to pass certbot related variables as well, which can be found 
 - install and configure amavis
 - install and configure opendkim
 - install and configure opendmarc
+- install and configure dovecot with system-users being able to login and receive mail
 - configure mailutils (installed by role this is dependant on)
 - install and configure opendmarc dashboard (WIP)
-- install and configure dovecot (WIP)
 
 # Future Improvements
 
 - Finish implementing opendmarc dashboard
 - Add alternatives to certbot role
-- Finish implementing dovecot service
+
+# Sources
+
+- [Postfix documentation](https://www.postfix.org/documentation.html)
+- [SIDN guide on configuring Postfix](https://www.sidn.nl/en/news-and-blogs/hands-on-implementing-spf-dkim-and-dmarc-in-postfix)
+- [How to configure Dovecot](https://www.linuxbabe.com/mail-server/install-dovecot-imap-server-debian)
+- [Dovecot installation test commands](https://wiki2.dovecot.org/TestInstallation)
