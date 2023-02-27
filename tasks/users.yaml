@@ -24,3 +24,10 @@
     - policyd-spf
   loop_control:
     loop_var: user_name
+
+- name: Add dovecode user to mail group
+  ansible.builtin.user:
+    name: dovecot
+    groups: mail
+    append: true
+  become: true

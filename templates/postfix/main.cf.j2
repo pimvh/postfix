@@ -164,6 +164,9 @@ non_smtpd_milters=$smtpd_milters
 # I've not been able to determine if this still matters or not.
 milter_mail_macros=i {mail_addr} {client_addr} {client name} {auth_authen}
 
+# Added rewriting for local clients
+local_header_rewrite_clients = permit_mynetworks permit_sasl_authenticated permit_inet_interfaces
+
 # The proxy_interfaces parameter specifies the network interface
 # addresses that this mail system receives mail on by way of a
 # proxy or network address translation unit. This setting extends
@@ -274,6 +277,13 @@ policyd-spf_time_limit = 3600
 # local_recipient_maps settings are OK.
 #
 unknown_local_recipient_reject_code = 550
+
+# Dovecot required
+# The first line tells Postfix to deliver incoming emails to local message store via the Dovecot LMTP server.
+# The second line disables SMTPUTF8 in Postfix, because Dovecot-LMTP doesn’t support this email extension.
+mailbox_transport = lmtp:unix:private/dovecot-lmtp
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+smtputf8_enable = no
 
 # TRUST AND RELAY CONTROL
 
@@ -625,13 +635,6 @@ smtpd_tls_auth_only = yes
 smtp_tls_note_starttls_offer = yes
 smtpd_tls_cert_file = {{ postfix_smtpd_tls_cert_file }}
 smtpd_tls_key_file = {{ postfix_smtpd_tls_key_file }}
-{#
-look more in detail at other other certs
-smtpd_tls_cert_file = /etc/pki/tls/certs/postfix-rsa.cert
-smtpd_tls_eccert_file = /etc/pki/tls/certs/postfix-ecdsa.cert
-smtpd_tls_key_file = /etc/pki/tls/private/postfix-rsa.key
-smtpd_tls_eckey_file = /etc/pki/tls/private/postfix-ecdsa.key
-#}
 
 smtpd_tls_auth_only = yes
 smtpd_tls_loglevel = 1

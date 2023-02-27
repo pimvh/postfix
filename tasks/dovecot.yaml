@@ -2,15 +2,18 @@
 - name: Copy dovecot configuration file
   ansible.builtin.template:
     src: dovecot/{{ config }}.j2
-    dest: "/etc/dovecot/conf.d/{{ config }}"
+    dest: "/etc/dovecot/{{ config }}"
     validate: doveconf %s
     owner: root
     group: root
     mode: u=rw,g=r,o=r
   become: true
   loop:
-    - 10-auth.conf
-    - 10-master.conf
+    - dovecot.conf
+    - conf.d/10-master.conf
+    - conf.d/10-auth.conf
+    - conf.d/10-mail.conf
+    - conf.d/10-ssl.conf
   loop_control:
     loop_var: config
   notify: restart dovecot

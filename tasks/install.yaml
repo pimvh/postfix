@@ -20,6 +20,8 @@
       - clamav
       - clamav-daemon
       - dovecot-core
+      - dovecot-imapd
+      - dovecot-lmtpd
     state: present
   when: postfix_install
   become: true
