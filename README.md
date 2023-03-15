@@ -10,21 +10,22 @@ pip3 install ansible
 
 ## Required variables
 
-Review the variables as shown in defaults.
+Review the variables as shown in defaults. A description of what the variables entail is given in the argument spec, in meta/main.yaml.
+
+You probably want to pass certbot related variables as well, which can be found [here](https://github.com/pimvh/certbot).
 
 # Example playbook
 
 ```
 hosts:
   - foo
+
 roles:
   - pimvh.postfix
 
 ```
 
-Note that this role is dependant on pimvh.certbot, for its TLS certificate.
-
-You probably want to pass certbot related variables as well, which can be found [here](https://github.com/pimvh/certbot).
+Note that this role is dependant on pimvh.certbot, for getting a TLS certificate.
 
 # TLDR - What will happen if I run this
 
@@ -36,6 +37,16 @@ You probably want to pass certbot related variables as well, which can be found 
 - install and configure dovecot with system-users being able to login and receive mail
 - configure mailutils (installed by role this is dependant on)
 - install and configure opendmarc dashboard (WIP)
+
+# What this role does not do
+
+## Firewalling
+
+This role does not do any firewalling, due to you probably having specific requirements for that. You probably do not want to open your IMAP port to the entire internet, if you can avoid it. So take care!
+
+## Setting up a database backend
+
+I haven't gotten around to configuring the setup of a database as a backend for postfix. If you're interested, feel free to contribute.
 
 # Future Improvements
 
