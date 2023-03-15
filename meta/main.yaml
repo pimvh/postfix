@@ -23,7 +23,143 @@ galaxy_info:
     - dkim
     - spf
     - dmarc
+    - dovecot
     - certbot
 
 dependencies:
   - role: pimvh.certbot
+
+argument_specs:
+  main:
+    short_description: The main entry for this postfix role
+    description: >
+      This entrypoint of the postfix role configures postfix on the requested host.
+    options:
+      postfix_ipv4:
+        type: string
+        required: true
+        description: The IPv4 address of the postfix mail server
+      postfix_ipv6:
+        type: string
+        required: true
+        description: The IPv6 address of the postfix mail server
+      postfix_myhostname:
+        type: string
+        required: true
+        description: The hostname of the postfix mail server
+      postfix_mydomain:
+        type: string
+        required: false
+        default: "{{ postfix_myhostname }}"
+        description: The hostname of the postfix mail server, defaults to the hostname
+          passed as a variable
+      postfix_mynetworks:
+        type: list
+        elements: string
+        default:
+          - 127.0.0.0/8
+          - "[::1]/128"
+        required: false
+        description: Networks which postfix sees as coming from itself. These are
+          allowed to send emails, origination from the server.
+      postfix_relay_domains:
+        type: list
+        elements: string
+        required: false
+        default: $mydestination
+        description: domains to relay email for, might be handy when you have multiple
+          domains.
+      postfix_aliases:
+        type: list
+        elements: dict
+        required: false
+        default: []
+        description: configure aliases for postfix, to aliases email addresses.
+        options:
+          user:
+            type: string
+            required: false
+            description: destination user of the alias
+          users:
+            type: string
+            required: false
+            description: destination users of the alias
+          alias:
+            type: string
+            required: true
+            description: the alias to create for this user or users
+
+      postfix_virtual_aliases:
+        type: list
+        elements: dict
+        required: false
+        default:
+          - user: root
+            alias: postmaster
+        description: configure aliases for postfix, to aliases email addresses. by
+          default postmaster is aliased to root.
+      postfix_virtual_alias_domains:
+        type: list
+        elements: dict
+        default: []
+        required: false
+        description: configures virtual aliases for postfix
+        options:
+          email:
+            type: string
+            description: email or domain to create alias for (e.g. for mail.<domain>,
+              use @mail.<domain> here)
+          user:
+            type: string
+            description: where the alias should point (e.g. for @mail.<domain>, this
+              should be @localhost)
+      postfix_instal:
+        type: bool
+        required: false
+        default: true
+        description: whether to install postfix with this role
+      postfix_dir:
+        type: string
+        required: false
+        default: /etc/postfix/
+        description: where to install postfix with this role
+      postfix_dkim_enabled:
+        type: bool
+        required: false
+        default: true
+        description: whether to enable dkim
+      postfix_dkim_keys:
+        type: dict
+        required: false
+        default:
+          default:
+            mail: "*"
+        description: dkim keys to configure. Subelements have the name as initial
+          key, and for which emails it is for as a 'mail' subkey, see defaults.yaml
+      postfix_dkim_keytable:
+        type: string
+        required: false
+        default: /etc/opendkim/keytable
+        description: where to store the dkim keytable
+      postfix_dkim_signingtable:
+        type: string
+        required: false
+        default: /etc/opendkim/signingtable
+        description: where to store the dkim signingtable
+      postfix_dkim_trustedhosts:
+        type: string
+        required: false
+        default: /etc/opendkim/trustedhosts
+        description: where to store the dkim trustedhost file
+
+      postfix_smtpd_tls_cert_file:
+        type: string
+        required: false
+        default: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
+        description: where to retrieve the TLS cert from for SMTP
+
+      postfix_smtpd_tls_key_file:
+        type: string
+        required: false
+        default: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
+        description: where to retrieve the TLS cert from for SMTP
