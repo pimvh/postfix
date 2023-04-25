@@ -2,6 +2,6 @@
 localhost
 ::1
 {{ postfix_ipv4 }}
-{{ postfix_ipv6 }}
+{% if postfix_ipv6 is sameas true %}{{ postfix_ipv6 }}{% endif %}
 *.{{ postfix_mydomain }}
 

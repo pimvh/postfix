@@ -1,3 +1,4 @@
+---
 - name: Copy mailutils config file
   ansible.builtin.template:
     src: "mailutils/mailutils.conf"

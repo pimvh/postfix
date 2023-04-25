@@ -18,22 +18,15 @@ ansible-galaxy install pimvh.postfix
 
 Review the variables as shown in defaults. A description of what the variables entail is given in the argument spec, in meta/main.yaml. The variables passed to this role are validated by the argument spec at runtime.
 
-You are required to pass `pimvh.certbot` related variables as well, which can be found [here](https://github.com/pimvh/certbot).
-
 # Example playbook
 
 A simple way to run this role on a host, is the following:
-
-NB: this role is dependant on `pimvh.certbot`, for getting a TLS certificate. See above.
 
 ```
 - hosts:
   - foo
 
   vars:
-    # add required additional variables for certbot.
-    # see link above
-
     postfix_ipv4: << Pass the IPv4 address of the postfix mail server here >>
     postfix_ipv6: << Pass the IPv6 address of the Postfix mail server here >>
     postfix_myhostname: "<< Pass the postfix domain name here >>"
@@ -70,7 +63,7 @@ NB: this role is dependant on `pimvh.certbot`, for getting a TLS certificate. Se
     # postfix_dkim_signingtable: /etc/opendkim/signingtable
     # postfix_dkim_trustedhosts: "/etc/opendkim/trustedhosts"
 
-    # cert location is based on certbots default place
+    # cert location is based on certbots default place (you can run the role pimvh.certbot to pull certs)
     # postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
     # postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/privkey.pem"
 
@@ -114,7 +107,6 @@ This role validates the passed variables. If you:
 There are still a number of things which can be improved for this role. The following things are things I am considering of adding:
 
 - Finish implementing opendmarc dashboard
-- Add alternatives to certbot role
 - Add a better backend to the postfix server, like a database instead of the bare filesystem.
 
 If you have other Improvements, feel free to open an issue.

@@ -1,0 +1,14 @@
+---
+postfix_ipv4: "127.0.0.1"
+postfix_ipv6: ""
+postfix_myhostname: "mail.example.com"
+postfix_mynetworks:
+  - "127.0.0.0/8"
+
+postfix_aliases:
+  - user: root
+    alias: postmaster
+
+postfix_dkim_enabled: false
+postfix_smtpd_tls_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+postfix_smtpd_tls_key_file: /etc/ssl/private/ssl-cert-snakeoil.key

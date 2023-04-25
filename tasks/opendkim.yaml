@@ -61,7 +61,7 @@
     loop_var: dkim_file
 
 - name: Copy OpenDKIM config file
-  template:
+  ansible.builtin.template:
     src: opendkim/opendkim.conf.j2
     dest: "/etc/opendkim.conf"
     validate: opendkim -n -x %s

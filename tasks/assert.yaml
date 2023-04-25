@@ -1,6 +1,6 @@
 ---
 - name: Verify that required variables are defined for DKIM
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ item }}  is defined"
       - "{{ item }} != None"

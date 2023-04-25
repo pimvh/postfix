@@ -7,6 +7,9 @@
 
 - name: Create key if not present
   ansible.builtin.command: "opendkim-genkey -b 1024 -d {{ postfix_mydomain }} -D /etc/dkimkeys/{{ postfix_mydomain }} -s {{ dkim_key.name }} -v"
+  args:
+    creates: "/etc/dkimkeys/{{ postfix_mydomain }}/{{ dkim_key.name }}.private"
+  changed_when: true
   become: true
   when: not open_dkim_key_present.stat.exists
 

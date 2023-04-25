@@ -33,6 +33,8 @@
       ansible.builtin.command: /sbin/postfix check
       become: true
       when: postfix_config.changed
+      tags:
+        - skip_ansible_lint
 
 - name: Copy Postfix aliases file
   ansible.builtin.template:

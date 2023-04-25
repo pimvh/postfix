@@ -25,12 +25,13 @@ postfix_dir: /etc/postfix
 
 postfix_dkim_enabled: true
 postfix_dkim_keys:
-  default:
+  - name: default
     mail: "*"
 
 postfix_dkim_keytable: /etc/opendkim/keytable
 postfix_dkim_signingtable: /etc/opendkim/signingtable
 postfix_dkim_trustedhosts: "/etc/opendkim/trustedhosts"
 
+postfix_dovecot_ssl: true
 postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
 postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/privkey.pem"
