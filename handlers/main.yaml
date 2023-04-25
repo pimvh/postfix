@@ -1,10 +1,11 @@
 ---
 - name: Generate virtual database for postfix
-  command: sudo postmap /etc/postfix/virtual
+  ansible.builtin.command: sudo postmap /etc/postfix/virtual
+  changed_when: true
   become: true
   listen: "generate virtual aliasdb"
 
-- name: enable and restart Postfix service
+- name: Enable and restart Postfix service
   ansible.builtin.systemd:
     name: postfix
     state: restarted
@@ -12,12 +13,13 @@
   become: true
   listen: "restart postfix"
 
-- name: update aliases
+- name: Update aliases
   ansible.builtin.command: newaliases
+  changed_when: true
   become: true
   listen: "update aliases"
 
-- name: restart dovecot
+- name: Restart dovecot
   ansible.builtin.systemd:
     name: dovecot
     state: restarted
@@ -25,7 +27,7 @@
   become: true
   listen: "restart dovecot"
 
-- name: restart amavis
+- name: Restart amavis
   ansible.builtin.systemd:
     name: amavis
     state: restarted
@@ -33,7 +35,7 @@
   become: true
   listen: "restart amavis"
 
-- name: restart opendkim
+- name: Restart opendkim
   ansible.builtin.systemd:
     name: opendkim
     state: restarted
@@ -41,7 +43,7 @@
   become: true
   listen: "restart opendkim"
 
-- name: restart opendmarc
+- name: Restart opendmarc
   ansible.builtin.systemd:
     name: opendmarc
     state: restarted

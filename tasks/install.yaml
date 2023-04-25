@@ -8,7 +8,7 @@
   when: postfix_install
   become: true
 
-- name: install Postfix and related packages
+- name: Install Postfix and related packages
   ansible.builtin.package:
     name:
       - postfix
