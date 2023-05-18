@@ -88,14 +88,6 @@ argument_specs:
       postfix_virtual_aliases:
         type: list
         elements: dict
-        required: false
-        default:
-          - user: root
-            alias: postmaster
-        description: configure aliases for postfix, to aliases email addresses. by default postmaster is aliased to root.
-      postfix_virtual_alias_domains:
-        type: list
-        elements: dict
         default: []
         required: false
         description: configures virtual aliases for postfix
@@ -106,6 +98,13 @@ argument_specs:
           user:
             type: str
             description: where the alias should point (e.g. for @mail.<domain>, this should be @localhost)
+
+      postfix_virtual_alias_domains:
+        type: list
+        elements: str
+        required: false
+        description: domains which a virtual aliases fro the configured postfix domain
+
       postfix_instal:
         type: bool
         required: false
