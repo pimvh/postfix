@@ -35,3 +35,6 @@ postfix_dkim_trustedhosts: "/etc/opendkim/trustedhosts"
 postfix_dovecot_ssl: true
 postfix_smtpd_tls_cert_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
 postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/privkey.pem"
+
+postfix_dovecot_deny_users:
+  - root

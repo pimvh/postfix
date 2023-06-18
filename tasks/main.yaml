@@ -77,8 +77,8 @@
   ansible.builtin.file:
     path: "/var/log/{{ log_file }}"
     state: touch
-    owner: root
-    group: root
+    owner: syslog
+    group: adm
     mode: u=rw,g=r,o=
     modification_time: preserve
     access_time: preserve

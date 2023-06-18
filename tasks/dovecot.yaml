@@ -14,6 +14,7 @@
     - conf.d/10-auth.conf
     - conf.d/10-mail.conf
     - conf.d/10-ssl.conf
+    - deny-users
   loop_control:
     loop_var: config
   notify: restart dovecot
