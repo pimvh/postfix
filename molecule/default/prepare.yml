@@ -7,3 +7,18 @@
       ansible.builtin.apt:
         update_cache: true
       become: true
+
+    - name: Install required package for postfix, rsyslog
+      ansible.builtin.package:
+        name:
+          - rsyslog
+        state: present
+      become: true
+
+    - name: Start ssh and rsyslog service
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - rsyslog
+      become: true

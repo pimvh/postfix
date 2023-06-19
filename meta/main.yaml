@@ -128,6 +128,7 @@ argument_specs:
           - default:
             mail: "*"
         description: dkim keys to configure. Subelements have the name as initial key, and for which emails it is for as a 'mail' subkey, see defaults.yaml
+
       postfix_dkim_keytable:
         type: str
         required: false
@@ -155,3 +156,10 @@ argument_specs:
         required: false
         default: "/etc/letsencrypt/live/{{ postfix_mydomain }}/fullchain.pem"
         description: where to retrieve the TLS cert from for SMTP
+
+      postfix_dovecot_deny_users:
+        type: list
+        required: false
+        default:
+          - "root"
+        description: list of users which are denied logging in in dovecot
