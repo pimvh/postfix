@@ -1,5 +1,4 @@
 ![Molecule test](https://github.com/pimvh/postfix/actions/workflows/test.yaml/badge.svg)
-![Molecule test](https://github.com/pimvh/postfix/actions/workflowss/test.yaml/badge.svg)
 
 # Requirements
 
