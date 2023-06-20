@@ -27,7 +27,7 @@
 #
 # <doc/wiki/MailLocation.txt>
 #
-mail_location = maildir:~/Maildir
+mail_location = sdbox:/var/mail/%n/
 
 # If you need to set multiple mailbox locations or want to change default
 # namespace settings, you can do it by defining namespace sections.
@@ -175,7 +175,7 @@ mail_privileged_group = mail
 # to make sure that users can't log in as daemons or other system users.
 # Note that denying root logins is hardcoded to dovecot binary and can't
 # be done even if first_valid_uid is set to 0.
-#first_valid_uid = 500
+first_valid_uid = 1000
 #last_valid_uid = 0
 
 # Valid GID range for users, defaults to non-root/wheel. Users having

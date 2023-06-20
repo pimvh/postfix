@@ -38,3 +38,4 @@ postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/privke
 
 postfix_dovecot_deny_users:
   - root
+postfix_dovecot_dh_params_size: 4096

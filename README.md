@@ -83,7 +83,7 @@ You will probably save yourself some refactors if do not set variables inline, b
 - install and configure amavis
 - install and configure opendkim
 - install and configure opendmarc
-- install and configure dovecot with system-users being able to login and receive mail
+- install and configure dovecot with system-users and virtual mail directory
 - configure mailutils (installed by role this is dependant on)
 - install and configure opendmarc dashboard (WIP)
 

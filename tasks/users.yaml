@@ -25,9 +25,23 @@
   loop_control:
     loop_var: user_name
 
-- name: Add dovecode user to mail group
+- name: Ensure group "vmail" exists
+  ansible.builtin.group:
+    name: vmail
+    state: present
+  become: true
+
+- name: Add vmail user for dovecot
+  ansible.builtin.user:
+    name: vmail
+    groups: vmail
+    home: /var/mail/
+    create_home: true
+    system: true
+  become: true
+
+- name: Add dovecot user
   ansible.builtin.user:
     name: dovecot
-    groups: mail
-    append: true
+    system: true
   become: true

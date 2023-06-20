@@ -163,3 +163,9 @@ argument_specs:
         default:
           - "root"
         description: list of users which are denied logging in in dovecot
+
+      postfix_dovecot_dh_params_size:
+        type: int
+        required: false
+        default: 4096
+        description: the size of the DH params generated for dovecot
