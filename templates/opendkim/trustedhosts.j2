@@ -3,12 +3,10 @@
 ::1
 # Postfix IPs
 {{ postfix_ipv4 }}
-{% if postfix_ipv6 %}{{ postfix_ipv6 }}{% endif %}
+{% if postfix_ipv6 %}{{ postfix_ipv6 }}{% endif +%}
 # DNS names
 localhost
-{% for hostname in postfix_mydestination %}
-{{ hostname }}
-{% endfor %}
+*.{{ postfix_myhostname }}
 # Postfix networks
 {% for network in postfix_mynetworks %}
 {{ network }}
