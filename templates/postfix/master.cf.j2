@@ -127,6 +127,7 @@ smtp-amavis        unix    -    -    n    -    2    smtp
 127.0.0.1:10027    inet    n    -    n    -    -    smtpd
    -o syslog_name=postfix/signer
    -o content_filter=
+   -o smtpd_tls_security_level=may
    -o local_recipient_maps=
    -o relay_recipient_maps=
    -o smtpd_restriction_classes=

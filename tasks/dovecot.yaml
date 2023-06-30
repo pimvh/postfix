@@ -5,10 +5,12 @@
     state: directory
     owner: vmail
     group: vmail
-    mode: u=rwx,g=,o=
+    # set uid for group
+    mode: u=rwx-s,g=rwx,o=,g+s,+t
   become: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Generate Diffie-Hellman parameters with size ({{ postfix_dovecot_dh_params_size }} 4096 bits)
+- name: Generate Diffie-Hellman parameters with size ({{ postfix_dovecot_dh_params_size }} bits)
   community.crypto.openssl_dhparam:
     path: /etc/dovecot/dhparams.pem
     size: "{{ postfix_dovecot_dh_params_size }}"

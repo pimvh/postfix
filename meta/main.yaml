@@ -51,12 +51,23 @@ argument_specs:
         required: false
         default: "{{ postfix_myhostname }}"
         description: The hostname of the postfix mail server, defaults to the hostname passed as a variable
+      postfix_mydestination:
+        type: list
+        elements: str
+        required: false
+        default:
+          - $myhostname
+          - localhost.$mydomain
+          - localhost
+          - $mydomain
+          - mail.$mydomain
+        description: The domains postfix sees as it's own destination, the default is pretty sane
       postfix_mynetworks:
         type: list
         elements: str
         default:
           - 127.0.0.0/8
-          - "[::1]/128"
+          - "::1/128"
         required: false
         description: Networks which postfix sees as coming from itself. These are allowed to send emails, origination from the server.
       postfix_relay_domains:

@@ -51,6 +51,7 @@ userdb {
   driver = passwd
   # [blocking=no]
   #args =
+  args = blocking=no
 
   # Override fields from passwd
   override_fields = uid=vmail gid=vmail home=/var/mail/%n/

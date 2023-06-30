@@ -85,6 +85,7 @@
   loop:
     - mail.log
     - mail.err
+    - mail.warn
   loop_control:
     loop_var: log_file
   become: true

@@ -46,7 +46,7 @@ namespace inbox {
   # Hierarchy separator to use. You should use the same separator for all
   # namespaces or some clients get confused. '/' is usually a good one.
   # The default however depends on the underlying mail storage format.
-  #separator =
+  separator = /
 
   # Prefix required to access this namespace. This needs to be different for
   # all namespaces. For example "Public/".
@@ -290,7 +290,7 @@ protocol !indexer-worker {
 
 # Assume Dovecot is the only MUA accessing Maildir: Scan cur/ directory only
 # when its mtime changes unexpectedly or when we can't find the mail otherwise.
-#maildir_very_dirty_syncs = no
+maildir_very_dirty_syncs = yes
 
 # If enabled, Dovecot doesn't use the S=<size> in the Maildir filenames for
 # getting the mail's physical size, except when recalculating Maildir++ quota.
@@ -349,7 +349,9 @@ protocol !indexer-worker {
 
 # Like mbox_dirty_syncs, but don't do full syncs even with SELECT, EXAMINE,
 # EXPUNGE or CHECK commands. If this is set, mbox_dirty_syncs is ignored.
-#mbox_very_dirty_syncs = no
+
+# For better performance
+mbox_very_dirty_syncs = yes
 
 # Delay writing mbox headers until doing a full write sync (EXPUNGE and CHECK
 # commands and when closing the mailbox). This is especially useful for POP3
