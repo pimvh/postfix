@@ -1,7 +1,13 @@
+# Local IPs
 127.0.0.1
-localhost
 ::1
+# Postfix IPs
 {{ postfix_ipv4 }}
-{% if postfix_ipv6 is sameas true %}{{ postfix_ipv6 }}{% endif %}
-*.{{ postfix_mydomain }}
-
+{% if postfix_ipv6 %}{{ postfix_ipv6 }}{% endif +%}
+# DNS names
+localhost
+*.{{ postfix_myhostname }}
+# Postfix networks
+{% for network in postfix_mynetworks %}
+{{ network }}
+{% endfor %}

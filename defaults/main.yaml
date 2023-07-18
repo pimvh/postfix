@@ -1,11 +1,19 @@
 ---
-postfix_ipv4: "{{ '' | default(ipv4, true) }}"
-postfix_ipv6: "{{ '' | default(ipv6, true) }}"
-postfix_myhostname: "{{ '' | default(domain, true) }}"
+postfix_ipv4: ""
+postfix_ipv6: ""
+postfix_myhostname: ""
 postfix_mydomain: "{{ '' | default(postfix_myhostname, true) }}"
+
+postfix_mydestination:
+  - $myhostname
+  - localhost.$mydomain
+  - localhost
+  - $mydomain
+  - mail.$mydomain
+
 postfix_mynetworks:
   - 127.0.0.0/8
-  - "[::1]/128"
+  - "::1/128"
 postfix_virtual_alias_domains: []
 postfix_relay_domains: []
 postfix_aliases:
@@ -38,3 +46,4 @@ postfix_smtpd_tls_key_file: "/etc/letsencrypt/live/{{ postfix_mydomain }}/privke
 
 postfix_dovecot_deny_users:
   - root
+postfix_dovecot_dh_params_size: 4096

@@ -35,7 +35,7 @@ A simple way to run this role on a host, is the following:
     postfix_mydomain: "<< Pass the postfix domain here, defaults to myhostname >>"
     postfix_mynetworks:
       - 127.0.0.0/8
-      - "[::1]/128"
+      - "::1/128" # You do not have to bracket IPv6 addresses, this is taken care of by filters
     # Add additional networks when required
     postfix_virtual_alias_domains: [] # Add virtual aliases domains when required (see meta/main.yaml for structure)
     postfix_relay_domains: [] # Add relay domains when required (see defaults/main.yaml for structure)
@@ -83,9 +83,8 @@ You will probably save yourself some refactors if do not set variables inline, b
 - install and configure amavis
 - install and configure opendkim
 - install and configure opendmarc
-- install and configure dovecot with system-users being able to login and receive mail
+- install and configure dovecot with system-users and virtual mail directory
 - configure mailutils (installed by role this is dependant on)
-- install and configure opendmarc dashboard (WIP)
 
 # What this role does not do
 
@@ -108,7 +107,7 @@ This role validates the passed variables. If you:
 
 There are still a number of things which can be improved for this role. The following things are things I am considering of adding:
 
-- Finish implementing opendmarc dashboard
+- Add a dmarc parsing tool
 - Add a better backend to the postfix server, like a database instead of the bare filesystem.
 
 If you have other Improvements, feel free to open an issue.

@@ -12,3 +12,6 @@ postfix_aliases:
 postfix_dkim_enabled: false
 postfix_smtpd_tls_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
 postfix_smtpd_tls_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+
+# Reduced size for testing
+postfix_dovecot_dh_params_size: 1024

@@ -1,4 +1,25 @@
 ---
+- name: Edited ownership of /var/mail
+  ansible.builtin.file:
+    path: /var/mail/
+    state: directory
+    owner: vmail
+    group: vmail
+    # set uid for group
+    mode: u=rwx-s,g=rwx,o=,g+s,+t
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Generate Diffie-Hellman parameters with size ({{ postfix_dovecot_dh_params_size }} bits)
+  community.crypto.openssl_dhparam:
+    path: /etc/dovecot/dhparams.pem
+    size: "{{ postfix_dovecot_dh_params_size }}"
+    state: present
+  become: true
+  # I disagree with name[template], as it is sort of at the end here
+  tags:
+    - skip_ansible_lint
+
 - name: Copy dovecot configuration file
   ansible.builtin.template:
     src: dovecot/{{ config }}.j2

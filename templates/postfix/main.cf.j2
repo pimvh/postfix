@@ -133,6 +133,16 @@ myorigin = $mydomain
 append_dot_mydomain = no
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 
+# Enable SMTP Authentication on the Postfix SMTP server using dovecot
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+
+# Use local UNIX-domain sockets for communication between Postfix and Dovecot.
+smtpd_sasl_path = private/auth
+
+smtpd_sasl_security_options = noanonymous, noplaintext
+smtpd_sasl_tls_security_options = noanonymous
+
 # RECEIVING MAIL
 
 # The inet_interfaces parameter specifies the network interface
@@ -211,8 +221,7 @@ local_header_rewrite_clients = permit_mynetworks permit_sasl_authenticated permi
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
 #mydestination = $myhostname, localhost.$mydomain, localhost
-#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain, mail.$mydomain, www.$mydomain, ftp.$mydomain
+mydestination = {{ postfix_mydestination | join(', ')}}
 
 mynetworks_style = host
 
@@ -277,11 +286,19 @@ local_recipient_maps = proxy:unix:passwd.byname $alias_maps
 # with 450 (try again later) until you are certain that your
 # local_recipient_maps settings are OK.
 #
+
+unknown_address_reject_code  = 554
+unknown_hostname_reject_code = 554
+unknown_client_reject_code   = 554
 unknown_local_recipient_reject_code = 550
 
 # Dovecot required
 # The first line tells Postfix to deliver incoming emails to local message store via the Dovecot LMTP server.
 # The second line disables SMTPUTF8 in Postfix, because Dovecot-LMTP doesn’t support this email extension.
+
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
+
 mailbox_transport = lmtp:unix:private/dovecot-lmtp
 virtual_transport = lmtp:unix:private/dovecot-lmtp
 smtputf8_enable = no
@@ -330,7 +347,7 @@ smtputf8_enable = no
 #mynetworks = 168.100.3.0/28, 127.0.0.0/8
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
-mynetworks = {{ postfix_mynetworks | join(', ') }}
+mynetworks = {{ postfix_mynetworks | map("bracket_ipv6") | join(', ') }}
 
 # The relay_domains parameter restricts what destinations this system will
 # relay mail to.  See the smtpd_recipient_restrictions description in
@@ -492,7 +509,7 @@ recipient_delimiter = +
 # UNIX-style mailboxes are kept. The default setting depends on the
 # system type.
 #
-#mail_spool_directory = /var/mail
+mail_spool_directory = /var/mail
 #mail_spool_directory = /var/spool/mail
 
 # The mailbox_command parameter specifies the optional external
@@ -669,13 +686,13 @@ smtpd_tls_eecdh_grade = ultra
 # set up EECDH parameters for 192-bits security level (ignored from Postfix version 3.6)
 # smtpd_tls_dh1024_param_file = /etc/postfix/dh4096.pem
 
-smtpd_tls_loglevel = 1
 smtpd_tls_session_cache_timeout = 3600s
 
 # strong DHE parameters
 smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_tls_session_cache
 tls_random_source = dev:/dev/urandom
 
+# Is not enabled, but is good to set anyway.
 # LMTP from your server to others
 lmtp_tls_note_starttls_offer = yes
 lmtp_tls_protocols =           !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
@@ -805,5 +822,4 @@ debugger_command =
 # sample_directory =
 
 # readme_directory: The location of the Postfix README files.
-#
 readme_directory = no

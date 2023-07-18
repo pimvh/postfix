@@ -1,19 +1,19 @@
 ---
-- name: Adding existing user clamav to amavis group
+- name: Adding existing user "clamav" to "amavis" group
   ansible.builtin.user:
     name: clamav
     groups: amavis
     append: true
   become: true
 
-- name: Adding existing user postfix user to opendkim group
+- name: Adding existing user "postfix" user to opendkim group
   ansible.builtin.user:
     name: postfix
     groups: amavis
     append: true
   become: true
 
-- name: Add opendkim and policyd-spf users
+- name: Add "opendkim" and "policyd-spf" users
   ansible.builtin.user:
     name: "{{ user_name }}"
     state: present
@@ -25,9 +25,23 @@
   loop_control:
     loop_var: user_name
 
-- name: Add dovecode user to mail group
+- name: Ensure group "vmail" exists
+  ansible.builtin.group:
+    name: vmail
+    state: present
+  become: true
+
+- name: Add "vmail" user for dovecot
+  ansible.builtin.user:
+    name: vmail
+    groups: vmail
+    home: /var/mail/
+    create_home: true
+    system: true
+  become: true
+
+- name: Add "dovecot" user
   ansible.builtin.user:
     name: dovecot
-    groups: mail
-    append: true
+    system: true
   become: true
