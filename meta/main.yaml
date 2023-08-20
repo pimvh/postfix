@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Pim van Helvoirt
+  author: pimvh
   description: "role to configure postfix, with ClamAV, Amavis, DKIM, SPF and DMARC"
 
   license: GPL-3.0-only
